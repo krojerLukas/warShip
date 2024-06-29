@@ -1,6 +1,7 @@
 import Tile from "./Tile"
 import {useEffect, useState} from "react";
 import Playerhalf from "./Playerhalf";
+import {logDOM} from "@testing-library/react";
 
 
 const rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
@@ -10,12 +11,9 @@ const shipParts = 5 + 3 + 2 + 1;
 
 
 export default function Board({currentGameState, currentPlayer}) {
-    const [tilesArray, setTilesArray] = useState([]);
+    const [tileObjectsArray, setTileObjectsArray] = useState([]);
     const [coordinatesArray, setCoordinatesArray] = useState([]);
     const [boatParts, setBoatParts] = useState([]);
-
-
-
 
 
     // Creates coordinates for each Tile and stores it in coordinatesArray
@@ -31,10 +29,6 @@ export default function Board({currentGameState, currentPlayer}) {
     }, []);
 
 
-
-
-
-
     useEffect(() => {
         // creates an object out of coordinatesArray
         const tileObjectsArray = coordinatesArray.map((coordinate) => ({
@@ -44,22 +38,8 @@ export default function Board({currentGameState, currentPlayer}) {
             }
         ))
 
-        // initializes Tile Component
-        const tiles = tileObjectsArray.map((tile, index) => {
-            return (
-                <Tile key={tile.coordinate}
-                      isHit={tile.isHit}
-                      hasBoatPart={tile.hasBoatPart}
-                      handleClickedTile={handleClickedTile}
-                      currentGameState={currentGameState}
-                      coordinate={coordinatesArray[index]}/>
-            )
-        })
-        setTilesArray(tiles)
+        setTileObjectsArray(tileObjectsArray)
     }, [coordinatesArray, currentGameState, currentPlayer])
-
-
-
 
 
     // handles clicked Tile as html element
@@ -74,7 +54,7 @@ export default function Board({currentGameState, currentPlayer}) {
         // determines wether an 'X' (representing a boat part) is allowed to be set or not
         if (!boatParts.includes(tileHtml.id) && currentGameState === 'picking boat') {
             // console.log(currentPlayer, coordinateIntString)
-            if ((currentPlayer === 'player 1' && coordinateIntString<=5) || (currentPlayer === 'player 2' && coordinateIntString>=6)) {
+            if ((currentPlayer === 'player 1' && coordinateIntString <= 5) || (currentPlayer === 'player 2' && coordinateIntString >= 6)) {
                 setBoatParts(prevParts => [...prevParts, tileHtml.id]);
                 const updatedObject = coordinatesArray.map((tileObj) => ({
                     // Update Object here
@@ -87,7 +67,19 @@ export default function Board({currentGameState, currentPlayer}) {
 
     return (
         <div className="board">
-            {tilesArray}
+            {
+                // initializes Tile Component
+                tileObjectsArray.map((tile, index) => (
+
+                    <Tile key={tile.coordinate}
+                          isHit={tile.isHit}
+                          hasBoatPart={tile.hasBoatPart}
+                          handleClickedTile={handleClickedTile}
+                          currentGameState={currentGameState}
+                          coordinate={coordinatesArray[index]}/>
+
+                ))
+            }
         </div>
     )
 }
