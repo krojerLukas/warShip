@@ -31,15 +31,15 @@ export default function Board({currentGameState, currentPlayer}) {
 
     useEffect(() => {
         // creates an object out of coordinatesArray
-        const tileObjectsArray = coordinatesArray.map((coordinate) => ({
+        const initialTileObjectsArray = coordinatesArray.map((coordinate) => ({
                 coordinate: coordinate,
                 hasBoatPart: false,
                 isHit: false
             }
         ))
 
-        setTileObjectsArray(tileObjectsArray)
-    }, [coordinatesArray, currentGameState, currentPlayer])
+        setTileObjectsArray(initialTileObjectsArray)
+    }, [coordinatesArray])
 
 
     // handles clicked Tile as html element
@@ -53,12 +53,15 @@ export default function Board({currentGameState, currentPlayer}) {
 
         // determines wether an 'X' (representing a boat part) is allowed to be set or not
         if (!boatParts.includes(tileHtml.id) && currentGameState === 'picking boat') {
+
             // console.log(currentPlayer, coordinateIntString)
             if ((currentPlayer === 'player 1' && coordinateIntString <= 5) || (currentPlayer === 'player 2' && coordinateIntString >= 6)) {
                 setBoatParts(prevParts => [...prevParts, tileHtml.id]);
-                const updatedObject = coordinatesArray.map((tileObj) => ({
-                    // Update Object here
-                }))
+
+                // updated array with all tiles as objects
+                const newTileObjectsArray = tileObjectsArray.map(obj => obj.coordinate === coordinateString ? {...obj, hasBoatPart: true} : obj)
+                setTileObjectsArray(newTileObjectsArray)
+
                 tileHtml.innerHTML = 'X';
             }
         }
@@ -75,8 +78,9 @@ export default function Board({currentGameState, currentPlayer}) {
                           isHit={tile.isHit}
                           hasBoatPart={tile.hasBoatPart}
                           handleClickedTile={handleClickedTile}
+                          coordinate={coordinatesArray[index]}
                           currentGameState={currentGameState}
-                          coordinate={coordinatesArray[index]}/>
+                    />
 
                 ))
             }

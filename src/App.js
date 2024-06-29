@@ -9,7 +9,7 @@ import './style.css'
 import Board from "./components/Board";
 import BoatSetButton from "./components/BoatSetButton";
 
-const gameStates = ['picking boat', 'game over'];
+const gameStates = ['picking boat', 'game running', 'game over'];
 
 const players = [
     'player 1',
@@ -22,11 +22,16 @@ const App = () => {
     const [currentPlayer, setCurrentPlayer] = useState(players[0]);
 
 
+
     const handlePlayerSwitchButton = (buttonId) => {
         console.log("The button id is: " + buttonId)
 
         if (buttonId === '1') {
             setCurrentPlayer(players[1])
+        }
+
+        if (buttonId === '2') {
+            setCurrentGameState(gameStates[1])
         }
     }
 
