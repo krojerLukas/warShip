@@ -17,6 +17,7 @@ export default function Board({currentGameState, currentPlayer}) {
 
 
 
+
     // Creates coordinates for each Tile and stores it in coordinatesArray
     useEffect(() => {
         let newCoordinatesArray = [];
@@ -46,8 +47,12 @@ export default function Board({currentGameState, currentPlayer}) {
         // initializes Tile Component
         const tiles = tileObjectsArray.map((tile, index) => {
             return (
-                <Tile key={tile.coordinate} handleClickedTile={handleClickedTile}
-                      currentGameState={currentGameState} coordinate={coordinatesArray[index]}/>
+                <Tile key={tile.coordinate}
+                      isHit={tile.isHit}
+                      hasBoatPart={tile.hasBoatPart}
+                      handleClickedTile={handleClickedTile}
+                      currentGameState={currentGameState}
+                      coordinate={coordinatesArray[index]}/>
             )
         })
         setTilesArray(tiles)
@@ -59,16 +64,21 @@ export default function Board({currentGameState, currentPlayer}) {
 
     // handles clicked Tile as html element
     const handleClickedTile = (tileHtml) => {
-        // const int = tileHtml.id.split("").slice(1);
 
-        // slices coordinate at Letter so only number returns
-        const int = tileHtml.id.slice(1)
+        // returns the entire coordinate ot the clicked tile
+        const coordinateString = tileHtml.id
+
+        // slices coordinate at Letter so only number (as string) returns
+        const coordinateIntString = tileHtml.id.slice(1)
 
         // determines wether an 'X' (representing a boat part) is allowed to be set or not
         if (!boatParts.includes(tileHtml.id) && currentGameState === 'picking boat') {
-            // console.log(currentPlayer, int)
-            if ((currentPlayer === 'player 1' && int<=5) || (currentPlayer === 'player 2' && int>=6)) {
-                boatParts.push(tileHtml.id)
+            // console.log(currentPlayer, coordinateIntString)
+            if ((currentPlayer === 'player 1' && coordinateIntString<=5) || (currentPlayer === 'player 2' && coordinateIntString>=6)) {
+                setBoatParts(prevParts => [...prevParts, tileHtml.id]);
+                const updatedObject = coordinatesArray.map((tileObj) => ({
+                    // Update Object here
+                }))
                 tileHtml.innerHTML = 'X';
             }
         }
