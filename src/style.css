@@ -1,0 +1,32 @@
+.board {
+    display: grid;
+    /* bestimmt Größe des Tiles */
+    grid-template-columns: repeat(10, 70px);
+    grid-template-rows: repeat(10, 70px);
+    gap: 1px;
+    border: 2px solid lightgray;
+    background-color: lightgray;
+}
+
+.tile {
+    cursor: pointer;
+    max-width: 70px;
+    max-height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1E90FF; /* Schönes Blau für Wasser */
+    border: 1px solid #D3D3D3; /* Blasser grauer Rand */
+    color: white;
+    font-weight: bold;
+    padding: 20px;
+}
+
+.tile:hover {
+    background-color: #1C86EE; /* Etwas dunkleres Blau bei Hover */
+}
+
+.disabled {
+    opacity: 50%;
+    pointer-events: none;
+}
