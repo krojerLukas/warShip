@@ -1,18 +1,19 @@
 import Tile from "./Tile"
 import {useEffect, useState} from "react";
-import Playerhalf from "./Playerhalf";
-import {logDOM} from "@testing-library/react";
+import { setBoatPart } from "../utils/onTileClickCallbacks"
 
 
 const rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
 const cols = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
-const shipParts = 5 + 3 + 2 + 1;
+const boatPartsPerPlayer = 5 + 3 + 2 + 1;
 
 
-export default function Board({currentGameState, currentPlayer}) {
+export default function Board({currentGameState, currentPlayer, playerObjectsArray}) {
     const [tileObjectsArray, setTileObjectsArray] = useState([]);
     const [coordinatesArray, setCoordinatesArray] = useState([]);
+
+    // Array with id of clicked boat parts
     const [boatParts, setBoatParts] = useState([]);
 
 
@@ -39,20 +40,20 @@ export default function Board({currentGameState, currentPlayer}) {
         ))
 
         setTileObjectsArray(initialTileObjectsArray)
-    }, [coordinatesArray])
+    }, [coordinatesArray]);
+
+
 
 
     // handles clicked Tile as html element
-    const handleClickedTile = (tileHtml) => {
+    const handleClickedTile = (tileHtml, tileIndex) => {
 
         // determines wether an 'X' (representing a boat part) is allowed to be set or not when placing boat parts
-        if (!boatParts.includes(tileHtml.id)) {
-
-            console.log(currentGameState)
+        if (!boatParts.includes(tileHtml.id) && boatParts.length < boatPartsPerPlayer-1) {
 
             switch (currentGameState) {
                 case 'picking boat':
-                    setBoatPart(tileHtml);
+                    setBoatPart(tileHtml, tileIndex, currentPlayer, boatParts, setBoatParts, tileObjectsArray, setTileObjectsArray);
                     break;
 
                 case 'game running':
@@ -63,34 +64,14 @@ export default function Board({currentGameState, currentPlayer}) {
                 case 'game over':
                     break;
 
+                default:
+                    break;
+
             }
 
         }
     }
 
-
-    const setBoatPart = (tileHtml) => {
-        // returns the entire coordinate ot the clicked tile
-        const coordinateString = tileHtml.id
-
-        // slices coordinate at Letter so only number (as string) returns
-        const coordinateIntString = tileHtml.id.slice(1)
-
-        // console.log(currentPlayer, coordinateIntString)
-        if ((currentPlayer === 'player 1' && coordinateIntString <= 5) || (currentPlayer === 'player 2' && coordinateIntString >= 6)) {
-            setBoatParts(prevParts => [...prevParts, tileHtml.id]);
-
-            // updated array with all tiles as objects
-            const newTileObjectsArray = tileObjectsArray.map(obj => obj.coordinate === coordinateString ? {
-                ...obj,
-                hasBoatPart: true
-            } : obj)
-            setTileObjectsArray(newTileObjectsArray)
-
-            tileHtml.innerHTML = 'X';
-        }
-
-    }
 
 
     return (
@@ -99,7 +80,8 @@ export default function Board({currentGameState, currentPlayer}) {
                 // initializes Tile Component
                 tileObjectsArray.map((tile, index) => (
 
-                    <Tile key={tile.coordinate}
+                    <Tile index={index}
+                          key={tile.coordinate}
                           isHit={tile.isHit}
                           hasBoatPart={tile.hasBoatPart}
                           handleClickedTile={handleClickedTile}
