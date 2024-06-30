@@ -45,26 +45,51 @@ export default function Board({currentGameState, currentPlayer}) {
     // handles clicked Tile as html element
     const handleClickedTile = (tileHtml) => {
 
+        // determines wether an 'X' (representing a boat part) is allowed to be set or not when placing boat parts
+        if (!boatParts.includes(tileHtml.id)) {
+
+            console.log(currentGameState)
+
+            switch (currentGameState) {
+                case 'picking boat':
+                    setBoatPart(tileHtml);
+                    break;
+
+                case 'game running':
+                    console.log('Das ist ein Kommentar, der nur ausgeführt wird, wenn das Spiel auch wirklich läuft.');
+                    break;
+
+                    // TODO: 'game over' anders platzieren, so, dass switch case gar nicht erreicht wird.
+                case 'game over':
+                    break;
+
+            }
+
+        }
+    }
+
+
+    const setBoatPart = (tileHtml) => {
         // returns the entire coordinate ot the clicked tile
         const coordinateString = tileHtml.id
 
         // slices coordinate at Letter so only number (as string) returns
         const coordinateIntString = tileHtml.id.slice(1)
 
-        // determines wether an 'X' (representing a boat part) is allowed to be set or not
-        if (!boatParts.includes(tileHtml.id) && currentGameState === 'picking boat') {
+        // console.log(currentPlayer, coordinateIntString)
+        if ((currentPlayer === 'player 1' && coordinateIntString <= 5) || (currentPlayer === 'player 2' && coordinateIntString >= 6)) {
+            setBoatParts(prevParts => [...prevParts, tileHtml.id]);
 
-            // console.log(currentPlayer, coordinateIntString)
-            if ((currentPlayer === 'player 1' && coordinateIntString <= 5) || (currentPlayer === 'player 2' && coordinateIntString >= 6)) {
-                setBoatParts(prevParts => [...prevParts, tileHtml.id]);
+            // updated array with all tiles as objects
+            const newTileObjectsArray = tileObjectsArray.map(obj => obj.coordinate === coordinateString ? {
+                ...obj,
+                hasBoatPart: true
+            } : obj)
+            setTileObjectsArray(newTileObjectsArray)
 
-                // updated array with all tiles as objects
-                const newTileObjectsArray = tileObjectsArray.map(obj => obj.coordinate === coordinateString ? {...obj, hasBoatPart: true} : obj)
-                setTileObjectsArray(newTileObjectsArray)
-
-                tileHtml.innerHTML = 'X';
-            }
+            tileHtml.innerHTML = 'X';
         }
+
     }
 
 
@@ -87,9 +112,3 @@ export default function Board({currentGameState, currentPlayer}) {
         </div>
     )
 }
-
-// Was kann der Component
-
-// - Muss in 2 hälften geteilt werden
-// - Muss random Schiffe in Tiles setzten
-// -

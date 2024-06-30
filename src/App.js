@@ -22,15 +22,14 @@ const App = () => {
     const [currentPlayer, setCurrentPlayer] = useState(players[0]);
 
 
-
     const handlePlayerSwitchButton = (buttonId) => {
         console.log("The button id is: " + buttonId)
 
         if (buttonId === '1') {
+            // Player 2 now picking boat
             setCurrentPlayer(players[1])
-        }
-
-        if (buttonId === '2') {
+        } else {
+            // Player 2 set all boats and pressed button
             setCurrentGameState(gameStates[1])
         }
     }
@@ -38,7 +37,7 @@ const App = () => {
 
     return (
         <div>
-            <BoatSetButton buttonId={handlePlayerSwitchButton} />
+            <BoatSetButton buttonId={handlePlayerSwitchButton}/>
             <Board currentPlayer={currentPlayer} currentGameState={currentGameState}/>
         </div>
     )
