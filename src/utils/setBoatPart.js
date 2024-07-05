@@ -7,8 +7,6 @@ export const setBoatPart = (clickedTileInfoObject, currentPlayer, boatParts, set
     const tileIndex = clickedTileInfoObject.tileIndex
 
 
-
-    // const [currentBoatsArray, setCurrentBoatArray]
     let playerBoatsSetCounter= 0;
 
     // slices coordinate at Letter so only number (as string) returns

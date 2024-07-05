@@ -8,10 +8,13 @@ export const checkIfNewBoat = (newTileObjectsArray, tileIndex, handlePlayerObjec
 
 // each element in array returns wether it is next to a existing boat part
     const isNextToBoatPartArray = [leftTileObj.hasBoatPart, rightTileObj.hasBoatPart, upperTileObj.hasBoatPart, lowerTileObj.hasBoatPart]
-    let defineNewBoat = isNextToBoatPartArray.includes(true)
+    let defineNewBoat = isNextToBoatPartArray.every(elem => elem === false);
+
+    console.log(defineNewBoat)
 
     if (defineNewBoat) {
-        // increases boats the player has set by 1
+        console.log("Its a new boat")
+        // increases boats to current player by 1
         handlePlayerObject(currentPlayer, playerBoatsSetCounter++);
     }
 

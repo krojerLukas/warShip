@@ -12,11 +12,14 @@ let clickedTileInfoObject = {
     tileHtml: undefined,
     tileIndex: undefined
 }
+let tempObject = {};
 
 
 export default function Board({currentGameState, currentPlayer, playerObjectsArray, handlePlayerObject}) {
     const [tileObjectsArray, setTileObjectsArray] = useState([]);
     const [coordinatesArray, setCoordinatesArray] = useState([]);
+
+    currentPlayer === 'player 1' ? tempObject = playerObjectsArray[0] : tempObject = playerObjectsArray[1];
 
     // Array with id of clicked boat parts
     const [boatPartsArr, setBoatPartsArr] = useState([]);
@@ -51,6 +54,7 @@ export default function Board({currentGameState, currentPlayer, playerObjectsArr
 
     // handles clicked Tile as html element
     const handleClickedTile = (tileHtml, tileIndex) => {
+
         clickedTileInfoObject = {
             tileHtml: tileHtml,
             tileIndex: tileIndex
@@ -64,6 +68,11 @@ export default function Board({currentGameState, currentPlayer, playerObjectsArr
                 case 'picking boat':
                     setBoatPart(clickedTileInfoObject, currentPlayer, boatPartsArr, setBoatPartsArr, tileObjectsArray, setTileObjectsArray, handlePlayerObject);
                     break;
+
+
+
+
+
 
                 case 'game running':
                     console.log('Das ist ein Kommentar, der nur ausgeführt wird, wenn das Spiel auch wirklich läuft.');
