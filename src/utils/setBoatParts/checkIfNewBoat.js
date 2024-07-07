@@ -6,9 +6,11 @@ export const checkIfNewBoat = (newTileObjectsArray, tileIndex, handlePlayerObjec
     const upperTileObj= newTileObjectsArray[tileIndex-10];
     const lowerTileObj= newTileObjectsArray[tileIndex+10];
 
-// each element in array returns wether it is next to a existing boat part
-    const isNextToBoatPartArray = [leftTileObj.hasBoatPart, rightTileObj.hasBoatPart, upperTileObj.hasBoatPart, lowerTileObj.hasBoatPart]
-    let defineNewBoat = isNextToBoatPartArray.every(elem => elem === false);
+    const neighbourTileObjectsArray = [newTileObjectsArray[tileIndex-1], newTileObjectsArray[tileIndex+1], newTileObjectsArray[tileIndex-10], newTileObjectsArray[tileIndex+10]];
+    const existingNeighbourTilesObjectsArray = neighbourTileObjectsArray.filter(obj => obj !== undefined)
+
+    // each element in array returns wether it is next to a existing boat part
+    let defineNewBoat = existingNeighbourTilesObjectsArray.every(elem => elem === false);
 
     console.log(defineNewBoat)
 

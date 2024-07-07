@@ -75,7 +75,7 @@ const App = () => {
     return (
         <div>
             <BoatSetButton buttonId={handlePlayerSwitchButton}/>
-            <Board currentPlayer={currentPlayer} playerObjectsArray={[player1Object, player2Object]} currentGameState={currentGameState}
+            <Board currentPlayerString={currentPlayer} playerObjectsArray={[player1Object, player2Object]} currentGameState={currentGameState}
                    handlePlayerObject={updatePlayerObject}/>
             <p>Spieler 1 hat {player1Object.boatsOnSea} Schiffe auf See.</p>
             <p>Spieler 2 hat {player2Object.boatsOnSea} Schiffe auf See.</p>
