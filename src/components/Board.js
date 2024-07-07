@@ -70,8 +70,6 @@ export default function Board({currentGameState, currentPlayerString, playerObje
                     break;
 
 
-
-
                 case 'game running':
                     console.log('Das ist ein Kommentar, der nur ausgeführt wird, wenn das Spiel auch wirklich läuft.');
                     break;

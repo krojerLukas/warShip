@@ -39,10 +39,10 @@ const App = () => {
         console.log("The button id is: " + buttonId)
 
         if (buttonId === '1') {
-            // Player 2 now picking boat
+            // Player 1 set all boats, now Player 2 picking boat
             setCurrentPlayer(player2Object.name)
         } else {
-            // Player 2 set all boats and pressed button
+            // Player 2 set all boats and pressed button, now gameState is 'running'
             setCurrentGameState(gameStates[1])
         }
     }
